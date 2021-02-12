@@ -1,0 +1,109 @@
+
+<cmacs-floating-menu [left]="left"
+                     [bottom]="bottom"
+                     [dragBoundary]="'.three-d-viewer'"
+                     [right]="right"
+                     [visible]=true
+                     [i18n]="i18n"
+                     [top]="top"
+                     [(position)]="position">
+  <button [disabled]="viewSectioning" title="Zoom" [placement]="getPlacement()" cmacs-button cmacs-tooltip ghost (click)="onBoxZoom()">
+    <i class="iconUILarge-Zoom"></i>
+  </button>
+  <cmacs-dropdown [trigger]="'click'" [cmacsOpen]="true" [placement]="getPlacement()">
+    <button [disabled]="viewSectioning"
+            title="Change View"
+            [placement]="getPlacement()" cmacs-button cmacs-tooltip ghost (click)="onClick()" cmacs-dropdown>
+      <i class="iconUILarge-Change-Views"></i>
+    </button>
+    <ul cmacs-menu class="cmacs-floating-menu-main-ul"
+        [class.cmacs-floating-menu-main-ul-right]="position === 'left'"
+        [class.cmacs-floating-menu-main-ul-top]="position === 'bottom'"
+        [class.cmacs-floating-menu-main-ul-bottom]="position === 'top'"
+        [class.cmacs-floating-menu-main-ul-left]="position === 'right'">
+      <li cmacs-menu-item (click)="setTopView()">
+        <span>Top View</span>
+      </li>
+      <li cmacs-menu-item (click)="setBottomView()">
+        <span>Bottom View</span>
+      </li>
+      <li cmacs-menu-item (click)="setLeftView()">
+        <span>Left View</span>
+      </li>
+      <li cmacs-menu-item (click)="setRightView()">
+        <span>Right View</span>
+      </li>
+      <li cmacs-menu-item (click)="setFrontView()">
+        <span >Front View</span>
+      </li>
+      <li cmacs-menu-item (click)="setBackView()">
+        <span>Back View</span>
+      </li>
+    </ul>
+  </cmacs-dropdown>
+  <button [disabled]="viewSectioning" title="Full View" [placement]="getPlacement()" cmacs-button cmacs-tooltip ghost (click)="onFullViewClick()">
+    <i class="iconUILarge-Full-View"></i>
+  </button>
+  <cmacs-dropdown [trigger]="'click'" [cmacsOpen]="true" [placement]="getPlacement()">
+    <button [disabled]="viewSectioning" title="Camera Menu"
+            [placement]="getPlacement()" cmacs-dropdown
+            cmacs-button cmacs-tooltip ghost (click)="setCameraMode()">
+      <i class="iconUILarge-Video-Camera"></i>
+    </button>
+    <ul cmacs-menu class="cmacs-floating-menu-main-ul"
+        [class.cmacs-floating-menu-main-ul-right]="position === 'left'"
+        [class.cmacs-floating-menu-main-ul-top]="position === 'bottom'"
+        [class.cmacs-floating-menu-main-ul-bottom]="position === 'top'"
+        [class.cmacs-floating-menu-main-ul-left]="position === 'right'">
+      <li cmacs-menu-item (click)="setPersepectiveCamera()">
+        <span>Perspective Camera</span>
+      </li>
+      <li cmacs-menu-item (click)="setOrthoGraphicCamera()">
+        <span>Orthographic Camera</span>
+      </li>
+    </ul>
+  </cmacs-dropdown>
+  <cmacs-divider [type]="position === 'bottom' || position === 'top' ? 'vertical' : 'horizontal'"></cmacs-divider>
+  <button [disabled]="viewSectioning" title="Translate" [placement]="getPlacement()" cmacs-button cmacs-tooltip ghost (click)="onTranslate()">
+    <i class="iconUILarge-Translate"></i>
+  </button>
+  <button [disabled]="viewSectioning" title="Scale" [placement]="getPlacement()" cmacs-button cmacs-tooltip ghost (click)="onScale()">
+    <i class="iconUILarge-Scale"></i>
+  </button>
+  <button [disabled]="viewSectioning" title="Rotate" [placement]="getPlacement()" cmacs-button cmacs-tooltip ghost (click)="onRotate()">
+    <i class="iconUILarge-Rotate"></i>
+  </button>
+  <div *ngIf="showOptionsInFloatingMenu">
+    <cmacs-divider [type]="position === 'bottom' || position === 'top' ? 'vertical' : 'horizontal'"></cmacs-divider>
+    <button title="Clipping" [placement]="getPlacement()" cmacs-button cmacs-tooltip ghost (click)="onClipping()">
+      <i class="iconUILarge-Clipping-Mask"></i>
+    </button>   
+    <cmacs-dropdown [trigger]="'click'" [cmacsOpen]="true" [placement]="getPlacement()">
+      <button [disabled]="viewSectioning" title="Explode Model"
+              [placement]="getPlacement()" cmacs-button cmacs-dropdown
+              cmacs-tooltip ghost (click)="onModelExplode()">
+        <i class="iconUILarge-Explode-Model"></i>
+      </button>
+      <ul cmacs-menu class="cmacs-floating-menu-main-ul slider-size"
+          [class.cmacs-floating-menu-main-ul-right]="position === 'left'"
+          [class.cmacs-floating-menu-main-ul-top]="position === 'bottom'"
+          [class.cmacs-floating-menu-main-ul-bottom]="position === 'top'"
+          [class.cmacs-floating-menu-main-ul-left]="position === 'right'">
+        <li cmacs-menu-item>
+          <cmacs-slider class="slider-width"
+                        [min]="0"
+                        [max]="1"
+                        [step]="0.1"
+                        (ngModelChange)="onChange($event)"
+                        [(ngModel)]="value">
+          </cmacs-slider>
+        </li>
+      </ul>
+    </cmacs-dropdown>
+    <cmacs-divider *ngIf="!isSharedViewer" [hidden]="onlyVisibleForStandAloneViewer" [type]="position === 'bottom' || position === 'top' ? 'vertical' : 'horizontal'"></cmacs-divider>
+    <button class="statusActive" (click)="showStatus($event)" *ngIf="!isSharedViewer" [hidden]="onlyVisibleForStandAloneViewer" [disabled]="viewSectioning" title="Status" [placement]="getPlacement()" cmacs-button cmacs-tooltip ghost>
+      <i #setStatus class="iconUILarge-Eye"></i>
+    </button>
+  </div>
+</cmacs-floating-menu>
+

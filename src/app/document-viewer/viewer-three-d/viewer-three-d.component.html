@@ -1,0 +1,31 @@
+<!-- <p>viewer-three-d works!</p> -->
+<div [hidden]="!ShowViewer" class="max-size" [style.height.px]="viewerHeight">
+    <div nz-row class="flexdisplay max-size">
+      <!-- <app-viewer-top-menu [isTopToolBar] = "isTopToolBar"></app-viewer-top-menu> -->
+      <div class="three-d-viewer" nz-col>
+        <app-iframe-wrapper #iframeWrapper [iframeId]="iframeId"   [URL]="URL" [ParentEvents]="iframeEvent.asObservable()"
+          [viewerHeight]="viewerHeight" (Loaded)="onLoaded($event)" (ChildEvents)="onChildEvents($event)">
+        </app-iframe-wrapper>
+        <!-- <ng-container *ngIf="options !== undefined && options!.ShowFloatingToolBar !== false"> -->
+          <ng-container *ngIf="showFloatMenu">
+            <app-viewer-floating-menu #floatingMenu [isSharedViewer]="isSharedViewer"
+              [showOptionsInFloatingMenu]="showOptionsInFloatingMenu" (refreshStatuses)="refresh3DViewers()"
+              (showHideStatus)="showHideStatus($event)" [options]="options" [iframeWrapper]="iframeWrapper"
+              [floatingMenuTop]="floatingMenuTop" [floatingMenuLeft]="floatingMenuLeft"></app-viewer-floating-menu>
+          </ng-container>
+        <!-- </ng-container> -->
+      </div>
+      <ng-container *ngIf="options !== undefined && options!.ShowRightToolBar !== false">
+        <app-viewer-right-panel #rightPanel [isSharedViewer]="isSharedViewer"
+          [selectedSubtypeModel]="selectedSubtypeModel" [PresignedURL]="PresignedURL" [options]="options"
+          (versionChanged)="onOpenVersion($event)" [document]="document" [iframeWrapper]="iframeWrapper"
+          class="flexdisplay" [isTopToolBar]="isTopToolBar" (initTag)="initTag()"></app-viewer-right-panel>
+      </ng-container>
+      <!-- <app-document-context-menu [iframeWrapper]="iframeWrapper" [document]="document"></app-document-context-menu> -->
+    </div>
+  </div>
+
+  
+
+  
+  <!-- <app-viewer-floating-menu [floatingMenuTop] = "floatingMenuTop" [floatingMenuLeft]= "floatingMenuLeft"></app-viewer-floating-menu> -->

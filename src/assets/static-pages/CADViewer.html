@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>iframe CAD viewer</title>
+    <meta name="CAD viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+</head>
+
+<body style="height:100%; width:100%;">
+    <style>
+        #cadCiewerWrapper {
+            margin-top: 35px;
+        }
+    
+    </style>
+<!-- <div id= "layout"> -->
+    <div class="sbimcutplane" id="CutPlaneView">
+        <div id="CADouterContainer">
+    <!-- sidebarContainer -->
+            <div id="CADmainContainer">
+                <div id="ToolbarCAD" class="documentviewertoolbar" align="center"></div>
+                <div id="CADLineSettingsDialog"></div>
+                <div id="ToolbarCADSearchMenu" class="documentviewertoolbarhanger"></div>
+            </div>
+        </div>
+
+        <!-- <div id="cutplaneviewer" class="cutPlaneContainer">
+            <div id="pageContainer-1">
+                <div id="cadCiewerWrapper" class="textLayer" style="width:100%; height:100%;">
+                    <div id="raphael-1" class="raphael"></div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+<!-- </div> -->
+<script src="/ClientApp/src/assets/scripts/common/iframeExchange.js"></script>
+<script src="/ClientApp/src/assets/scripts/common/jquery-2.2.4.min.js"></script>
+<script src="/ClientApp/src/assets/scripts/common/hammer.min.js"></script>
+<script src="/ClientApp/src/assets/scripts/common/qrcode.js"></script>
+<script src="/ClientApp/src/assets/scripts/common/qrcode.min.js"></script>
+
+<script src="/ClientApp/src/assets/scripts/2DGraphics/raphael.min.js"></script>
+<script src="/ClientApp/src/assets/scripts/2DGraphics/pdf.js"></script>
+<script src="/ClientApp/src/assets/scripts/2DGraphics/AnnotationApplication.js"></script>
+
+<!--// needs clean-up, should go through angular-->
+<script src="/ClientApp/src/assets/scripts/3DGraphics/FileUpload.js"></script>
+
+<script src="/ClientApp/src/assets/scripts/THREE.js/three.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/cameras/CombinedCamera.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/controls/OrbitControls.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/controls/EditorControls.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/controls/TransformControls.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/Controls/TrackballControls.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/helpers/THREEx.KeyboardState.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/helpers/THREEx.FullScreen.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/helpers/Tween.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/loaders/inflate.min.js "></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/curves/NURBSCurve.js "></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/curves/NURBSUtils.js "></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/curves/NURBSSurface.js "></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/loaders/PropertyBinding.js "></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/loaders/AnimationMixer.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/loaders/FileLoader.js "></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/loaders/STLLoader.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/loaders/OBJLoader.js "></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/loaders/GLTFLoader.js "></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/loaders/GLTF2Loader.js "></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/loaders/FBXLoader.js "></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/loaders/LoaderUtils.js "></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/loaders/MTLLoader.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/loaders/HDRCubeTextureLoader.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/shaders/SSAOShader.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/shaders/FXAAShader.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/shaders/CopyShader.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/shaders/SAOShader.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/shaders/DepthLimitedBlurShader.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/shaders/UnpackDepthRGBAShader.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/postprocessing/EffectComposer.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/postprocessing/RenderPass.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/postprocessing/ShaderPass.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/postprocessing/SSAOPass.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/postprocessing/SAOPass.js"></script>
+<!-- <script src="/ClientApp/src/assets/scripts/THREE.js/modeJS/mode.js"></script> -->
+<script src="/ClientApp/src/assets/scripts/THREE.js/loaders/RGBELoader.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/loaders/DDSLoader.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/loaders/ColladaLoader.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/loaders/ColladaLoader2.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/pmrem/PMREMCubeUVPacker.js "></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/pmrem/PMREMGenerator.js "></script>
+
+<script src="/ClientApp/src/assets/scripts/3DGraphics/CAPS/threeExtensions.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/CAPS/caps.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/CAPS/schedule.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/CAPS/shader.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/CAPS/uniforms.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/CAPS/material.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/CAPS/planeGeometry.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/CAPS/selectionBoxFace.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/CAPS/selectionBoxLine.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/CAPS/selection.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/CAPS/picking.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/CAPS/simulation.js"></script>
+
+<script src="/ClientApp/src/assets/scripts/3DGraphics/Three.js"></script>
+
+<!-- <script src="/ClientApp/src/assets/scripts/3DGraphics/CameraUtils.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/ControlUtils.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/DebugUtils.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/BackgroundRendering.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/DocumentEventHandler.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/ThreeDInitialize.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/NavigationCube.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/ModelLoader.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/Gui.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/RenderLoop.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/SectioningToolUtils.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/ThreeDTag.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/ThreeDTagUtils.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/ThreeDUtils.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/ViewToggle.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/init.js"></script> -->
+
+<script src="/ClientApp/src/assets/scripts/2DGraphics/LocalAnnotationsController.js"></script>
+<script src="/ClientApp/src/assets/scripts/2DGraphics/SvgGlobalController.js"></script>
+<script src="/ClientApp/src/assets/scripts/2DGraphics/SvgController.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/CADToolbar.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/CADViewer.js"></script>
+<script src="/ClientApp/src/assets/scripts/3DGraphics/CutPlane.js"></script>
+<script src="/ClientApp/src/assets/scripts/THREE.js/modeJS/mode.js"></script>
+
+
+    <script>
+        var ALLOW_ZOOM = true;
+        var GENERATE_CANVAS = true;
+
+    //     dataExchange.handlers.documentMetaData = function(currentDocument){
+    //     DocumentVersionExternalId = currentDocument.DocumentVersionId;
+    //     ProjectId = currentDocument.ProjectId;
+    // }
+
+    
+        $(document).ready(function (e) {
+        //  dataExchange.handlers.loadGlb = Three.ModelLoader.loadGlb;
+        //  //Three.DocumentEventHandler.init();
+        //    // Three.render();
+        //     $(window).resize(function () {
+        //         Three.DocumentEventHandler.resizeContainer();
+
+        //     });
+        
+         //dataExchange.handlers.loadTestCube = Three.ModelLoader.loadTestCube;
+        //     Three.DocumentEventHandler.init();
+        //    // Three.render();
+        //     $(window).resize(function () {
+        //         Three.DocumentEventHandler.resizeContainer();
+
+        //     });
+
+            // $(window).click(function(e){
+            //     Three.DocumentEventHandler.onDocumentClick();
+            // })
+
+
+
+        });
+        </script>
+  
+
+</body>
+</html>

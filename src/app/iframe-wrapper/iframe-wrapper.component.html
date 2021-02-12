@@ -1,0 +1,8 @@
+<!--Make sure the following line is included in your html:
+<script src="/ClientApp/src/assets/scripts/common/iframeExchange.js"></script>-->
+
+  <iframe [style.height.px] ="viewerHeight" class="fullsize nobroder" [id]="ExchangeId" *ngIf="IFrameURL != undefined" 
+    (load)="onIframeLoad(ExchangeId)" 
+    [src]="IFrameURL">
+  </iframe>
+

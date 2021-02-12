@@ -1,0 +1,133 @@
+/* floating menu */
+/* cmacs-floating-menu button i {
+    color: inherit;
+} */
+
+cmacs-floating-menu.view-positioning{
+    bottom: 12px;
+    left: 50%;
+    transform: translate(-148%, -21%);
+}
+
+cmacs-floating-menu.cameras-position{
+    bottom: 10px;
+    left: 50%;
+    transform: translate(-90%, -63%);
+}
+
+cmacs-floating-menu.slider-position{
+    bottom: 10px;
+    left: 50%;
+    transform: translate(-5%, -122%);
+    
+}
+
+
+.slider-width{
+    display: inline-grid; 
+    width: 160px;
+}
+
+cmacs-floating-menu.cameras-position > div,
+cmacs-floating-menu.view-positioning > div{
+    padding: 0px;
+}
+
+cmacs-floating-menu.cameras-position li,
+cmacs-floating-menu.view-positioning li{
+    padding: 8px 13px;
+    line-height:20px;
+}
+
+cmacs-floating-menu button .iconUILarge-Eye{
+    color: #2a7cff;
+}
+
+.slider-size{
+  width:180px;
+}
+
+/* items specific for this page */
+
+::ng-deep cmacs-floating-menu .ant-btn-icon-only:disabled
+{
+  background-color: #0d1e3b!important;
+}
+
+::ng-deep .cmacs-floating-menu-main-ul-top {
+  margin-bottom: 20px !important;
+}
+
+::ng-deep .cmacs-floating-menu-main-ul-bottom {
+  margin-top: 20px !important;
+}
+
+::ng-deep .cmacs-floating-menu-main-ul-left {
+  margin-right: 15px !important;
+}
+
+::ng-deep .cmacs-floating-menu-main-ul-right {
+  margin-left: 15px !important;
+}
+
+/* responsive */
+@media screen and (max-width: 767px){
+    cmacs-floating-menu{
+        display:none;
+    }
+}
+
+.iconUILarge-Zoom:before {
+  font-family: 'UILarge' !important;
+  content: "\e90e";
+}
+
+.iconUILarge-Change-Views:before {
+  font-family: 'UILarge' !important;
+  content: "\ea2f";
+}
+.iconUILarge-Full-View:before {
+  font-family: 'UILarge' !important;
+  content: "\ea4a";
+}
+
+
+.iconUILarge-Video-Camera:before {
+  font-family: 'UILarge' !important;
+  content: "\ea57";
+}
+
+.iconUILarge-Clipping-Mask:before {
+  font-family: 'UILarge' !important;
+  content: "\ea2e";
+}
+
+
+.iconUILarge-Rotate:before {
+  font-family: 'UILarge' !important;
+  content: "\e9a5";
+}
+
+.iconUILarge-Scale:before {
+  font-family: 'UILarge' !important;
+  content: "\e9a6";
+}
+
+.iconUILarge-Translate:before {
+  font-family: 'UILarge' !important;
+  content: "\e9a7";
+}
+
+.iconUILarge-Eye:before {
+  font-family: 'UILarge' !important;
+  content: "\e961";
+}
+.iconUILarge-Explode-Model:before {
+  font-family: 'UILarge' !important;
+  content: "\ea32";
+}
+
+.iconUILarge-More-Veritcal_Icon:before {
+  font-family: 'UILarge' !important;
+  content: "\e955";
+}

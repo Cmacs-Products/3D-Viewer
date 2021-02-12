@@ -1,0 +1,371 @@
+<div class="viewer-container" [style.height.px] ="viewerHeight">
+  <div nz-row class="flexdisplay">
+    <!-- downloads -->
+    <!-- <div *ngIf="showRightExpandable === 2" [ngClass]="!isTopToolBar ? ['rightexpandableems'] : ['right-expandable']">
+      <div class="section-content">
+        <div class="expandarrow">
+          <div class="sectiontitle">{{'common.three-d.downloads'</div>
+        </div>
+        <hr class="divider">
+      </div>
+      <div class="section-content downloaddiv">
+        <a (click)="DownloadOriginal()">
+          <span class="iconspan">
+            <i class="iconArrowLarge-Download"></i>
+          </span>
+          {{'common.three-d.download-original'
+        </a>
+      </div>
+      <div class="section-content downloaddiv">
+        <a (click)="DownloadWithAnnotations()">
+          <span class="iconspan">
+            <i class="iconArrowLarge-Download-with-annotations"></i>
+          </span>
+          {{'common.three-d.download-with-annotations'
+        </a>
+      </div>
+      <div class="section-content downloaddiv">
+        <a (click)="DownloadPdf()">
+          <span class="iconspan">
+            <i class="iconUILarge-Pdf"></i>
+          </span>
+          {{'common.three-d.download-pdf'
+        </a>
+      </div>
+    </div> -->
+    <!-- output -->
+    <!-- <div *ngIf="showRightExpandable === 3" [ngClass]="!isTopToolBar ? ['ems-right-expandable'] : ['right-expandable']">
+      <div class="section-content">
+        <div class="expandarrow">
+          <div class="sectiontitle">Output</div>
+
+        </div>
+        <hr class="divider">
+      </div>
+    </div> -->
+
+    <!-- <div *ngIf="showRightExpandable === 8" [ngClass]="!isTopToolBar ? ['ems-right-expandable'] : ['right-expandable']">
+      <div class="section-content">
+        <div class="expandarrow">
+          <div class="sectiontitle">{{'common.three-d.versions'</div>
+
+          <span class="iconspan">
+            <a (click)="closeRightPanel()"><i class="iconArrowLarge-Chevron-Last-FastForward"></i></a>
+          </span>
+        </div>
+        <hr class="divider section-content">
+        <div class="expanded-container">
+
+          <div *ngFor="let dv of listofDocumentVersions; let i=index">
+            <div nz-row class="version-data">
+              <a (click)="onVersionChange($event)">
+                <span>{{'common.documents.viewer-version'|translate}} {{document.DocumentVersionIds.length - i}}</span>
+              </a>
+            </div>
+            <div nz-row class="version-day">{{getCreatedOnDate(dv.VersionCreatedOn)}}</div>
+            <hr class="divider">
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <!-- model settings -->
+    <div *ngIf="showRightExpandable === 4" [ngClass]="!isTopToolBar ? ['ems-right-expandable'] : ['right-expandable']">
+      <div class="section-content">
+        <div class="expandarrow">
+          <div class="sectiontitle">Model Settings</div>
+          <span class="iconspan">
+            <a (click)="closeRightPanel()"><i class="iconArrowLarge-Chevron-Last-FastForward"></i></a>
+          </span>
+        </div>
+        <hr class="divider">
+      </div>
+      <div class="expanded-container">
+        <div class="section-content">
+          <div class="sidepanel-label">
+            View Mode 
+          </div>
+          <div class="sidepanel-label section-content">
+            <label cmacs-checkbox [(ngModel)]="edges"
+              (change)="onEdgesSelection($event)">Edges</label>
+          </div>
+          <div>
+            <cmacs-select value='selectedValue' class="itemwidth" [(ngModel)]="selectedValue"
+              (ngModelChange)="onViewModeSelectionChange($event)" placeHolder="Choose">
+              <cmacs-option value="Default" label="Default"></cmacs-option>
+              <cmacs-option value="Wireframe" label="Mesh"></cmacs-option>
+              <cmacs-option value="Cast Shadow" label="Cast Shadow"></cmacs-option>
+              <cmacs-option value="Ghost Mode" label="Ghost Mode"></cmacs-option>
+              <cmacs-option value="Hidden Line" label="Hidden Line"></cmacs-option>
+              <cmacs-option value="None" label="None"></cmacs-option>
+            </cmacs-select>
+          </div>
+        </div>
+        <div class="section-content">
+          <div class="sidepanel-label">
+            Up Orientation
+          </div>
+          <div>
+            <cmacs-radio-group [(ngModel)]="radioValue" (ngModelChange)="onOrientationChange($event)">
+              <label cmacs-radio value="Y">Y</label>
+              <label cmacs-radio value="Z">Z</label>
+            </cmacs-radio-group>
+          </div>
+        </div>
+        <div class="section-content">
+          <div class="sidepanel-label">
+            Reset Model
+          </div>
+          <div>
+            <button cmacs-button type="primary" (click)="resetViewer()"
+              class="itemwidth">Reset</button>
+          </div>
+        </div>
+        <hr class="divider">
+        <div class="section-content">
+          <div class="sectiontitle">Grid Settings</div>
+          <div class="input-number-demo">
+            <label cmacs-checkbox [(ngModel)]="hideGrid"
+              (ngModelChange)="onHideGrid($event)">Hide</label>
+            <label cmacs-checkbox [(ngModel)]="snapGrid"
+              (ngModelChange)="onSnapGrid($event)">Snap</label>
+            <!-- <cmacs-checkbox-group [(ngModel)]="checkOptionsOne" (change)="onChangeGridSettings($event)"></cmacs-checkbox-group> -->
+          </div>
+        </div>
+        <hr class="divider">
+        <div class="section-content">
+          <div class="sectiontitle">Background Settings</div>
+          <div nz-row class="section-content">
+            <span class="sidepanel-label">Color</span>
+            <cmacs-color-picker class="color-picker" [(color)]="color" (colorChange)="onColorChange($event)">
+            </cmacs-color-picker>
+          </div>
+        </div>
+        <div class="section-content">
+          <div class="section-content">
+            <label cmacs-checkbox [(ngModel)]="checked"
+              (change)="gradientFillChange($event)">Gradient Fill</label>
+          </div>
+          <div *ngIf="checked" class="section-content">
+            <span class="sidepanel-label">End Color'</span>
+            <cmacs-color-picker class="color-picker" [(color)]="endColor" (colorChange)="onEndColorChange($event)">
+            </cmacs-color-picker>
+          </div>
+          <div *ngIf="checked">
+            <div class="sidepanel-label">Gradient Type'</div>
+            <cmacs-select class="itemwidth" value="gradientValue" [(ngModel)]="gradientValue"
+              (ngModelChange)="onBackgroundSelectionChange($event)" allowClear placeHolder="Choose">
+              <cmacs-option value="linear" label="Linear"></cmacs-option>
+              <cmacs-option value="radial" label="Radial"></cmacs-option>
+            </cmacs-select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Properties -->
+    <div *ngIf="showRightExpandable === 5" [ngClass]="!isTopToolBar ? ['ems-right-expandable'] : ['right-expandable']">
+      <div class="section-content">
+        <div class="expandarrow">
+          <div class="sectiontitle">Translate</div>
+          <span class="iconspan">
+            <a (click)="closeRightPanel()"><i class="iconArrowLarge-Chevron-Last-FastForward"></i></a>
+          </span>
+        </div>
+        <hr class="divider">
+      </div>
+      <div class="expanded-container">
+        <div class="section-content">
+          <div class="section-content">
+            <span class="sidepanel-label">X</span>
+            <cmacs-slider class="translationwidth" [disabled]="disabled" (ngModelChange)="positionXSlider($event)"
+              [min]="-100" [max]="100" [(ngModel)]="translateXValue">
+            </cmacs-slider>
+            <input class="slider-input" cmacs-input [(ngModel)]="translateXValue"
+              (ngModelChange)="positionXSlider($event)" />
+          </div>
+          <div class="section-content">
+            <span class="sidepanel-label">Y</span>
+            <cmacs-slider class="translationwidth" [disabled]="disabled" [min]="-100" [max]="100"
+              (ngModelChange)="positionYSlider($event)" [(ngModel)]="translateYValue">
+            </cmacs-slider>
+            <input class="slider-input" cmacs-input [(ngModel)]="translateYValue"
+              (ngModelChange)="positionYSlider($event)" />
+          </div>
+          <div class="section-content">
+            <span class="sidepanel-label">Z</span>
+            <cmacs-slider class="translationwidth" [disabled]="disabled" [min]="-100" [max]="100"
+              (ngModelChange)="positionZSlider($event)" [(ngModel)]="translateZValue">
+            </cmacs-slider>
+            <input class="slider-input" cmacs-input [(ngModel)]="translateZValue"
+              (ngModelChange)="positionZSlider($event)" />
+          </div>
+          <hr class="divider">
+        </div>
+        <div class="section-content">
+          <div class="section-content sectiontitle">
+           Scale
+          </div>
+          <div class="section-content">
+            <span class="sidepanel-label">X</span>
+            <cmacs-slider class="translationwidth" [disabled]="disabled" [min]="-100" [max]="100"
+              (ngModelChange)="scaleXSlider($event)" [(ngModel)]="scaleXValue">
+            </cmacs-slider>
+            <input class="slider-input" cmacs-input [(ngModel)]="scaleXValue" (ngModelChange)="scaleXSlider($event)" />
+          </div>
+          <div class="section-content">
+            <span class="sidepanel-label">Y</span>
+            <cmacs-slider class="translationwidth" [disabled]="disabled" [min]="-100" [max]="100"
+              (ngModelChange)="scaleYSlider($event)" [(ngModel)]="scaleYValue">
+            </cmacs-slider>
+            <input class="slider-input" cmacs-input [(ngModel)]="scaleYValue" (ngModelChange)="scaleYSlider($event)" />
+          </div>
+          <div class="section-content">
+            <span class="sidepanel-label">Z</span>
+            <cmacs-slider class="translationwidth" [disabled]="disabled" [min]="-100" [max]="100"
+              (ngModelChange)="scaleZSlider($event)" [(ngModel)]="scaleZValue">
+            </cmacs-slider>
+            <input class="slider-input" cmacs-input [(ngModel)]="scaleZValue" (ngModelChange)="scaleZSlider($event)" />
+          </div>
+          <hr class="divider">
+        </div>
+        <div class="section-content">
+          <div class="section-content sectiontitle">
+            Rotate
+          </div>
+          <div class="section-content">
+            <span class="sidepanel-label">X</span>
+            <cmacs-slider class="translationwidth" [disabled]="disabled" [min]="-360" [max]="360"
+              (ngModelChange)="rotateXSlider($event)" [(ngModel)]="rotationXValue">
+            </cmacs-slider>
+            <input class="slider-input" cmacs-input [(ngModel)]="rotationXValue" (ngModelChange)="rotateXSlider($event)" />
+          </div>
+          <div class="section-content">
+            <span class="sidepanel-label">Y</span>
+            <cmacs-slider class="translationwidth" [disabled]="disabled" [min]="-360" [max]="360"
+              (ngModelChange)="rotateYSlider($event)" [(ngModel)]="rotationYValue">
+            </cmacs-slider>
+            <input class="slider-input" cmacs-input [(ngModel)]="rotationYValue" (ngModelChange)="rotateYSlider($event)" />
+          </div>
+          <div class="section-content">
+            <span class="sidepanel-label">Z</span>
+            <cmacs-slider class="translationwidth" [disabled]="disabled" [min]="-360" [max]="360"
+              (ngModelChange)="rotateZSlider($event)" [(ngModel)]="rotationZValue">
+            </cmacs-slider>
+            <input class="slider-input" cmacs-input [(ngModel)]="rotationZValue" (ngModelChange)="rotateZSlider($event)" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ifc properties -->
+    <div *ngIf="showRightExpandable === 6" [ngClass]="!isTopToolBar ? ['ems-right-expandable'] : ['right-expandable']">
+      <div class="section-content">
+        <div class="expandarrow">
+          <div class="sectiontitle">IFC Properties</div>
+          <!-- <span class="iconspan">
+            <i class="iconArrowLarge-Chevron-Last-FastForward"></i>
+          </span> -->
+        </div>
+        <hr class="divider">
+      </div>
+    </div>
+    <!-- system proeprties -->
+    <div *ngIf="showRightExpandable === 7" [ngClass]="!isTopToolBar ? ['ems-right-expandable'] : ['right-expandable']">
+      <div class="section-content">
+        <div class="expandarrow">
+          <div class="sectiontitle">System Properties'</div>
+          <span class="iconspan">
+            <a (click)="closeRightPanel()"><i class="iconArrowLarge-Chevron-Last-FastForward"></i></a>
+          </span>
+
+
+          <!-- <span class="iconspan">
+            <i class="iconArrowLarge-Chevron-Last-FastForward"></i>
+          </span> -->
+        </div>
+        <hr class="divider">
+        <img class="subtypeThumbnail" *ngIf="imageUrl" [src]="imageUrl"/>
+      </div>
+    </div>
+    <!-- right menu -->
+    <ul [ngClass]="!isTopToolBar ? ['ems3DResolution'] : ['doc3DResolution']" cmacs-menu [mode]="'vertical'"
+      [inlineCollapsed]="isCollapsed" [cmacsMode]="'side-bar'">
+      <li class="viewerside-panel-arrow">
+        <span (click)="scrollUp()">
+          <i class="iconArrowLarge-Chevron-Up"></i>
+        </span>
+      </li>
+      <div #widgetsContent class="viewerside-middle">
+        <!-- <li cmacs-menu-item title="Download" placement="left" cmacs-tooltip
+          (click)="DownloadOriginal()">
+          <span title class="iconspan">
+            <i class="iconArrowLarge-Download"></i>
+          </span>
+        </li> -->
+        <!-- <hr *ngIf="!isSharedViewer" [ngClass]="['vertical-divider']"> -->
+        <!-- <li cmacs-menu-item title="Output" placement="left"
+                        cmacs-tooltip (click)="UpdateRightExpandblePanel(1)">
+                        <span title class="iconspan">
+                            <i class="iconUILarge-List"></i>
+                        </span>
+                    </li> -->
+        <!-- <li *ngIf="!isSharedViewer" cmacs-menu-item title="Version" placement="left" cmacs-tooltip
+          (click)="UpdateRightExpandblePanel(8)">
+          <span title class="iconspan">
+            <i class="iconUILarge-Document-Version"></i>
+          </span>
+        </li> -->
+        <!-- <hr *ngIf="!isSharedViewer" [ngClass]="['vertical-divider']"> -->
+        <!-- <li [hidden]="onlyVisibleForStandAloneViewer" cmacs-menu-item title="{{'common.three-d.filter'" placement="left"
+      cmacs-tooltip (click)="UpdateRightExpandblePanel(3)">
+      <span title class="iconspan">
+          <i class="iconUILarge-Filter"></i>
+      </span>
+    </li> -->
+        <!-- <hr [hidden]="onlyVisibleForStandAloneViewer" [ngClass]="['vertical-divider']"> -->
+        <li *ngIf="!isSharedViewer" cmacs-menu-item title="Model Properties" placement="left" cmacs-tooltip
+          (click)="UpdateRightExpandblePanel(4)">
+          <span title class="iconspan">
+            <i class="iconUILarge-Properties"></i>
+          </span>
+        </li>
+        <li *ngIf="!isSharedViewer" cmacs-menu-item title="Transform Properties'" placement="left" cmacs-tooltip
+          (click)="UpdateRightExpandblePanel(5)">
+          <span title class="iconspan">
+            <i class="iconUILarge-Transform-Properties"></i>
+          </span>
+        </li>
+        <!-- <li cmacs-menu-item [hidden] = "onlyVisibleForStandAloneViewer" title="IFC Properties" placement="left"
+                    cmacs-tooltip (click)="UpdateRightExpandblePanel(6)">
+                    <span title class="iconspan">
+                        <i class="iconUILarge-IFC"></i>
+                    </span>
+                </li> -->
+        <li *ngIf="!isSharedViewer" cmacs-menu-item [hidden]="onlyVisibleForStandAloneViewer"
+          title="System Properties" placement="left" cmacs-tooltip
+          (click)="UpdateRightExpandblePanel(7)">
+          <span title class="iconspan">
+            <i class="iconUILarge-System"></i>
+          </span>
+        </li>
+        <!-- <div [ngClass]="['bar-button']">
+            <a (click)="UpdateRightExpandblePanel(3)"><i class="iconUILarge-Calendar"></i></a>
+          </div>
+          <div [ngClass]="['bar-button']">
+            <a (click)="UpdateRightExpandblePanel(5)"><i class="iconUILarge-Preferences"></i></a>
+          </div> -->
+        <!-- <hr class="divider"/>
+          <div class="section-content tagdiv">
+            <a (click)="tag()">
+              <span class="iconspan">
+                <i class="iconUILarge-Location"></i>
+              </span>
+            </a>
+          </div> -->
+      </div>
+      <li class="viewerside-panel-arrow">
+        <span (click)="scrollDown()">
+          <i class="iconArrowLarge-Chevron-Down"></i>
+        </span>
+      </li>
+    </ul>
+    </div>
+</div>

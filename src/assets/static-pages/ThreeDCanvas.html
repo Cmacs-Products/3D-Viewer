@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" style="height:100%; width:100%;">
+<head>
+    <meta charset="utf-8">
+    <title>iframe 3D viewer</title>
+    <meta name="3D viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+</head>
+<body style="height:100%; width:100%;">
+
+
+  <style>
+    body {
+      margin: 0px;
+      overflow: hidden;
+      background: #f7f7f7; /* For browsers that do not support gradients */
+      background: -webkit-linear-gradient(#f7f7f7, #000000); /* For Safari 5.1 to 6.0 */
+      background: -o-linear-gradient(#f7f7f7, #000000); /* For Opera 11.1 to 12.0 */
+      background: -moz-linear-gradient(#f7f7f7, #000000); /* For Firefox 3.6 to 15 */
+      background: linear-gradient(#f7f7f7, #000000); /* Standard syntax (must be last) */
+    }
+
+    #navigationCube {
+      height: 120px;
+      width: 120px;
+      overflow: hidden;
+      position: absolute;
+      bottom: 0;
+      z-index: 500;
+    }
+
+    .loadingoverlay {
+      z-index: 10000 !important;
+    }
+
+    .Sectioning {
+      z-index: 1;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+  <div id="Sectioning"></div>
+  <div id='ThreeJS' style="height:100%; width:100%;"></div>
+
+  <script src="/assets/scripts/common/iframeExchange.js"></script>
+  <script src="/assets/scripts/common/jquery-2.2.4.min.js"></script>
+  <script src="/assets/scripts/common/hammer.min.js"></script>
+
+  <!--// needs clean-up, should go through angular-->
+  <script src="/assets/scripts/3DGraphics/FileUpload.js"></script>
+
+  <script src="/assets/scripts/threejs/three.js"></script>
+  <!-- <script src="/assets/scripts/2DGraphics/FileOperations.js"></script> -->
+  <script src="/assets/scripts/threejs/cameras/CombinedCamera.js"></script>
+  <script src="/assets/scripts/threejs/controls/OrbitControls.js"></script>
+  <script src="/assets/scripts/threejs/controls/EditorControls.js"></script>
+  <script src="/assets/scripts/threejs/controls/TransformControls.js"></script>
+  <script src="/assets/scripts/threejs/controls/TrackballControls.js"></script>
+  <script src="/assets/scripts/threejs/helpers/THREEx.KeyboardState.js"></script>
+  <script src="/assets/scripts/threejs/helpers/THREEx.FullScreen.js"></script>
+  <script src="/assets/scripts/threejs/helpers/Tween.js"></script>
+  <script src="/assets/scripts/threejs/loaders/inflate.min.js "></script>
+  <script src="/assets/scripts/threejs/curves/NURBSCurve.js "></script>
+  <script src="/assets/scripts/threejs/curves/NURBSUtils.js "></script>
+  <script src="/assets/scripts/threejs/curves/NURBSSurface.js "></script>
+  <script src="/assets/scripts/threejs/loaders/PropertyBinding.js "></script>
+  <script src="/assets/scripts/threejs/loaders/AnimationMixer.js"></script>
+  <script src="/assets/scripts/threejs/loaders/FileLoader.js "></script>
+  <script src="/assets/scripts/threejs/loaders/STLLoader.js"></script>
+  <script src="/assets/scripts/threejs/loaders/OBJLoader.js "></script>
+  <script src="/assets/scripts/threejs/loaders/GLTFLoader.js "></script>
+  <script src="/assets/scripts/threejs/loaders/GLTF2Loader.js "></script>
+  <script src="/assets/scripts/threejs/loaders/FBXLoader.js "></script>
+  <script src="/assets/scripts/threejs/loaders/LoaderUtils.js "></script>
+  <script src="/assets/scripts/threejs/loaders/MTLLoader.js"></script>
+  <script src="/assets/scripts/threejs/loaders/HDRCubeTextureLoader.js"></script>
+  <script src="/assets/scripts/threejs/shaders/SSAOShader.js"></script>
+  <script src="/assets/scripts/threejs/shaders/FXAAShader.js"></script>
+  <script src="/assets/scripts/threejs/shaders/CopyShader.js"></script>
+  <script src="/assets/scripts/threejs/shaders/SAOShader.js"></script>
+  <script src="/assets/scripts/threejs/shaders/DepthLimitedBlurShader.js"></script>
+  <script src="/assets/scripts/threejs/shaders/UnpackDepthRGBAShader.js"></script>
+  <script src="/assets/scripts/threejs/postprocessing/EffectComposer.js"></script>
+  <script src="/assets/scripts/threejs/postprocessing/RenderPass.js"></script>
+  <script src="/assets/scripts/threejs/postprocessing/ShaderPass.js"></script>
+  <script src="/assets/scripts/threejs/postprocessing/SSAOPass.js"></script>
+  <script src="/assets/scripts/threejs/postprocessing/SAOPass.js"></script>
+  <script src="/assets/scripts/threejs/modeJS/mode.js"></script>
+  <script src="/assets/scripts/threejs/loaders/RGBELoader.js"></script>
+  <script src="/assets/scripts/threejs/loaders/DDSLoader.js"></script>
+  <script src="/assets/scripts/threejs/loaders/ColladaLoader.js"></script>
+  <script src="/assets/scripts/threejs/loaders/ColladaLoader2.js"></script>
+  <script src="/assets/scripts/threejs/pmrem/PMREMCubeUVPacker.js "></script>
+  <script src="/assets/scripts/threejs/pmrem/PMREMGenerator.js "></script>
+
+  <script src="/assets/scripts/3DGraphics/CAPS/threeExtensions.js"></script>
+  <script src="/assets/scripts/3DGraphics/CAPS/caps.js"></script>
+  <script src="/assets/scripts/3DGraphics/CAPS/schedule.js"></script>
+  <script src="/assets/scripts/3DGraphics/CAPS/shader.js"></script>
+  <script src="/assets/scripts/3DGraphics/CAPS/uniforms.js"></script>
+  <script src="/assets/scripts/3DGraphics/CAPS/material.js"></script>
+  <script src="/assets/scripts/3DGraphics/CAPS/planeGeometry.js"></script>
+  <script src="/assets/scripts/3DGraphics/CAPS/selectionBoxFace.js"></script>
+  <script src="/assets/scripts/3DGraphics/CAPS/selectionBoxLine.js"></script>
+  <script src="/assets/scripts/3DGraphics/CAPS/selection.js"></script>
+  <script src="/assets/scripts/3DGraphics/CAPS/picking.js"></script>
+  <script src="/assets/scripts/3DGraphics/CAPS/simulation.js"></script>
+
+  <script src="/assets/scripts/3DGraphics/Three.js"></script>
+  <script src="/assets/scripts/3DGraphics/CameraUtils.js"></script>
+  <script src="/assets/scripts/3DGraphics/ControlUtils.js"></script>
+  <script src="/assets/scripts/3DGraphics/DebugUtils.js"></script>
+  <script src="/assets/scripts/3DGraphics/BackgroundRendering.js"></script>
+  <script src="/assets/scripts/3DGraphics/DocumentEventHandler.js"></script>
+  <script src="/assets/scripts/3DGraphics/ThreeDInitialize.js"></script>
+  <script src="/assets/scripts/3DGraphics/NavigationCube.js"></script>
+  <script src="/assets/scripts/3DGraphics/ModelLoader.js"></script>
+  <script src="/assets/scripts/3DGraphics/Gui.js"></script>
+  <script src="/assets/scripts/3DGraphics/RenderLoop.js"></script>
+  <script src="/assets/scripts/3DGraphics/SectioningToolUtils.js"></script>
+  <script src="/assets/scripts/3DGraphics/ThreeDTag.js"></script>
+  <script src="/assets/scripts/3DGraphics/ThreeDTagUtils.js"></script>
+  <script src="/assets/scripts/3DGraphics/ThreeDUtils.js"></script>
+  <!-- <script src="/assets/scripts/3DGraphics/ScrollingTabs.js"></script> -->
+  <script src="/assets/scripts/3DGraphics/ViewToggle.js"></script>
+  <script src="/assets/scripts/3DGraphics/init.js"></script>
+
+
+  <!--
+      @Scripts.Render("~/bundles/DocumentCollaboration")
+      @Html.Partial("~/Views/Document/Partial_FileOperation.cshtml")
+      @Html.Partial("~/Views/Shared/_ThreeDViewerHeader.cshtml")
+      @Scripts.Render("~/bundles/ThreeJS")
+      @Scripts.Render("~/bundles/3DDocumentClipping")
+      @Scripts.Render("~/bundles/3DDocumentViewer")
+       -->
+
+  <script>
+
+    dataExchange.handlers.documentMetaData = function(currentDocument){
+        DocumentVersionExternalId = currentDocument.DocumentVersionId;
+        ProjectId = currentDocument.ProjectId;
+    }
+
+    //dataExchange.handlers.loadGlb = Three.ModelLoader.loadGlb;
+    
+
+    dataExchange.handlers.setStatus = function(data){
+        // polluting global namespace
+        const object = Three.scene.getObjectByName(data.IfcTag);
+        if (typeof object !== 'undefined'){
+            Three.Utils.set3DObjectMaterial(Three.scene.getObjectByName(data.IfcTag), Three.Utils.getStatusMaterialSet(data.Status));
+        }
+    }
+    dataExchange.handlers.hideStatuses = function(){
+      
+        Three.Utils.resetObjectMaterial("MainMesh",0,false);
+    }
+
+    dataExchange.handlers.SelectedEMSNodes = function(nodes){
+        let names = nodes.map(node=>node.IfcTag).filter(name=>typeof name !== 'undefined');
+        Three.Utils.zoomToObject({'selectedName':names});
+        Three.Utils.select3DObjects(names);
+        
+    };
+
+    dataExchange.handlers.initTag = function(currentDocument){
+        Three.ThreeDTagUtils.isTagMode = true;
+        DocumentVersionExternalId = currentDocument.DocumentVersionId;
+        ProjectId = currentDocument.ProjectId;
+    }
+
+    dataExchange.handlers.selectObjectByName = function(names){
+      if(!Three.Utils.showTransformControls){
+      Three.Utils.zoomToObject({'selectedName':names});
+      
+      Three.Utils.select3DObjects(names);
+      }
+      
+
+    }
+    dataExchange.handlers.loadOBJMTL = Three.ModelLoader.loadObjMtl;
+    dataExchange.handlers.loadOBJ = Three.ModelLoader.loadOBJ;
+
+
+        $(document).ready(function (e) {
+         dataExchange.handlers.loadGlb = Three.ModelLoader.loadGlb;
+         dataExchange.handlers.loadSTL = Three.ModelLoader.loadSTL;
+         dataExchange.handlers.loadOBJ = Three.ModelLoader.loadOBJ;
+         dataExchange.handlers.loadOBJMTL = Three.ModelLoader.loadObjMtl;
+         dataExchange.handlers.loadDae = Three.ModelLoader.loadDae;
+         dataExchange.handlers.checkForMtlOrObj = Three.ModelLoader.checkForMtlOrObj;
+         //dataExchange.handlers.loadTestCube = Three.ModelLoader.loadTestCube;
+            Three.DocumentEventHandler.init();
+           // Three.render();
+            $(window).resize(function () {
+                Three.DocumentEventHandler.resizeContainer();
+
+            });
+
+            // $(window).click(function(e){
+            //     Three.DocumentEventHandler.onDocumentClick();
+            // })
+
+
+
+        });
+  </script>
+
+
+</body>
+</html>

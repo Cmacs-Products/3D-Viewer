@@ -1,0 +1,14 @@
+/* viewer */
+.three-d-viewer{
+    height:100%;
+    width: calc( 100% - 40px);
+    position: relative;
+}
+
+.max-size{
+    height:100%;
+    width:100%
+}
+.flexdisplay {
+    display: flex;
+}

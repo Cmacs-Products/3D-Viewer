@@ -1,0 +1,10 @@
+.fullsize {
+    width: 100%;
+    height: 100%;
+    /* //height:calc(100vh - 227px); */
+}
+
+.nobroder {
+    border: none;
+}
+

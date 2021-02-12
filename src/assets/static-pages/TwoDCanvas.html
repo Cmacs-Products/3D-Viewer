@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>iframe 2D viewer</title>
+  <meta name="2D viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+  <link href="/Content/viewerGreen.css" rel="stylesheet" />
+
+</head>
+
+<body>
+  <style>
+    html[dir='ltr'] .splitToolbarButton {
+      margin: 3px 2px 4px 0;
+      display: inline-block;
+    }
+
+    .toolbar {
+      position: relative;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      cursor: default;
+    }
+
+    .loadingoverlay {
+      z-index: 10000;
+    }
+
+    #viewerContainer {
+      bottom: 52.5px;
+      top: 0 !important;
+    }
+
+    body {
+      margin: 0;
+    }
+  </style>
+
+  <style>
+    /*font-awsome default:*/
+    .fa.k-sprite,
+    .fa.k-sprite::before {
+      font-size: 17px;
+      line-height: 17px;
+    }
+
+    #Toolbar2D {
+      white-space: inherit;
+      height: 35px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+    }
+
+    #ToolbarCAD {
+      white-space: inherit;
+      height: 35px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+    }
+
+    #Toolbar3D a {
+      border-top: 0;
+      border-bottom: 0;
+    }
+
+    #cutplaneviewer div div div {
+      height: calc(100% - 67px)
+    }
+
+    /*
+    #toolbar3DViewer {
+        width:700px;
+    }*/
+    ul.k-split-container li a img,
+    li.k-split-button li a img,
+    .ViewerButton img,
+    .faButton a span {
+      box-sizing: content-box;
+      /*height: 17px;*/
+    }
+
+    #Toolbar2D .faButton.ViewerButton .k-button {
+      padding: 7px 4px;
+    }
+
+    #ToolbarCAD .faButton.ViewerButton .k-button {
+      padding: 7px 4px;
+    }
+
+    .k-overflow-container li.ViewerButton a,
+    .k-overflow-container li.k-split-button li a {
+      padding: 0 4px;
+      border-width: 0px;
+      text-align: left;
+    }
+
+    .ViewerButton a span,
+    .ViewerButton a img,
+    .k-split-button li a span {
+      box-sizing: border-box;
+      width: 17px;
+    }
+
+    .k-overflow-container li.ViewerButton a span.k-text,
+    .k-overflow-container li.k-split-button a span.k-text {
+      padding-left: 20px;
+    }
+
+    /*#Toolbar3D .hideOnMainToolbar,*/
+    ul.k-overflow-container li.annotationButton,
+    ul.k-overflow-container li.stampButton,
+    ul.k-overflow-container li.zoomleveloption,
+    .k-overflow-container .k-split-button li:first-child {
+      display: none;
+    }
+
+    .k-overflow-container .showOnMainToolbar {
+      display: block !important;
+    }
+
+    div[id*='VersionDropdown'],
+    div[id*='ToggleSceneViewButton'],
+    div[id*='CameraMenu'],
+    .floatLeft {
+      float: left;
+    }
+
+    div[id*='TwoDViewerAnnStamp'],
+    div[id*='TwoDAnnotationDropdown'],
+    .floatRight {
+      float: right;
+    }
+
+    /*.floatNone {
+        float: none;
+    }*/
+
+    .k-overflow-container .ViewerButton {
+      float: none;
+    }
+
+    .k-overflow-container li li a span.fa {
+      margin: 0 !important;
+    }
+
+    .force-rtl {
+      direction: rtl;
+    }
+  </style>
+
+
+  <script src="/ClientApp/src/assets/scripts/common/iframeExchange.js"></script>
+  <script src="/ClientApp/src/assets/scripts/common/jquery-2.2.4.min.js"></script>
+  <script src="/ClientApp/src/assets/scripts/common/qrcode.js"></script>
+  <script src="/ClientApp/src/assets/scripts/common/qrcode.min.js"></script>
+  <script>
+    var PDFWORKER = "/ClientApp/src/assets/scripts/2DGraphics/pdf.worker.js"
+  </script>
+  <!-- <script src="/ClientApp/src/assets/scripts/2DGraphics/kendo.all.min.js"></script> -->
+  <!-- <script src="/ClientApp/src/assets/scripts/2DGraphics/WsCollaboration.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/plan1ErrorService.js"></script> -->
+  <!-- <script src="/ClientApp/src/assets/scripts/2DGraphics/DocumentHelper.js"></script> -->
+  <!-- <script src="/ClientApp/src/assets/scripts/2DGraphics/FileUpload.js"></script> -->
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/FileUpload.js"></script>
+   <!--  <script src="/ClientApp/src/assets/scripts/2DGraphics/HiddenFileUpload.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/FileOperations.js"></script> -->
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/FileContextMenu.js"></script>
+  <!-- <script src="/ClientApp/src/assets/scripts/2DGraphics/UploadDialog.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/FileDragDrop.js"></script> -->
+  <!-- <script src="/ClientApp/src/assets/scripts/2DGraphics/FileTreeExplorer.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/FileTreeExplorerToolbar.js"></script> -->
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/share.js"></script>
+  <!-- <script src="/ClientApp/src/assets/scripts/2DGraphics/ImportAnnotation.js"></script> -->
+  <!-- <script src="/ClientApp/src/assets/scripts/2DGraphics/WsCollaboration.js"></script> -->
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/UUID.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/loadingoverlay.min.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/loadingoverlay_progress.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/LoadingOverlayLogic.js"></script>
+
+  <script>
+    ROLE = "ProAdmin";
+    ANNOTATION_ROLE = "ProAdmin";
+
+    var SvgGlobalControllerLogic = null;
+    AuthenticationToken = window.parent.AuthenticationToken;
+    var LocalAnnotationsControllerLogic = null;
+    loadedModule = "";
+    var SvgControllerLogic = null;
+    // window.projectUsers = {};
+    // var VIEW_RESOURCES = {
+    //   Resource: {}
+    // };
+    // var urlParams = new URLSearchParams(window.location.search);
+    // window.documentExternalId = urlParams.get('docId')
+    // // //window.documentExternalId = "20fd581a-e482-4972-8c5d-9a0eaa25fc63";
+    // var documentVersionExternalId = urlParams.get('docVersionId');
+
+    // //var documentVersionExternalId = "045fd955-b09a-441e-a74c-0d1eaf258f87";
+    var ProjectId,documentVersionExternalId,documentExternalId;
+    var extension = ".pdf";
+    // var documentAnnotationId = "@Model.DocumentAnnotationId";
+    // var canvasId = "@Model.CanvasId";
+    // //var loadedModule = (typeof window.parent.loadedModule !== 'undefined' && window.parent.loadedModule !== "@Model.Module") ? window.parent.loadedModule : "@Model.Module";
+    // var Context = "@ViewBag.Context";
+    var DocumentScale = "1";
+    var ReadOnly = "false";
+    var FileName = "fileName";
+    window.presignedUrl = "";
+
+
+
+    var OriginalFileName = FileName;
+    var OriginalExtension = extension;
+    var FileName = FileName;
+
+  </script>
+
+<div id="outerContainer">
+  <div id="sidebarContainer" style="display:none;">
+    <div id="toolbarSidebar">
+      <div cl`="splitToolbarButton toggled">
+        <button id="viewThumbnail" class="toolbarButton group toggled" data-toggle="tooltip" data-placement="bottom"
+          tabindex="2" data-l10n-id="thumbs">
+          <i class="far fa-th fa-2x"></i>
+          <span data-l10n-id="thumbs_label">@ViewResources.Resource.Thumbnails</span>
+        </button>
+      </div>
+    </div>
+    <div id="sidebarContent">
+      <div id="thumbnailView">
+      </div>
+    </div>
+    
+  </div>
+
+  <!-- sidebarContainer --> <!-- added by Akanksha for search bar (don't remove)-->
+  <div id="mainContainer"  style="display:none;">
+    <div class="findbar hidden doorHanger hiddenSmallView" id="findbar">
+      <label for="findInput" class="toolbarLabel" data-l10n-id="find_label">@ViewResources.Resource.Find:</label>
+      <input id="findInput" class="toolbarField" tabindex="91">
+      <div class="splitToolbarButton">
+        <button class="toolbarButton findPrevious" title="@ViewResources.Resource.Previous" id="findPrevious" tabindex="92" data-l10n-id="find_previous" data-toggle="tooltip" data-placement="bottom">
+          <i class="far fa-chevron-up"></i>
+          <span data-l10n-id="find_previous_label">@ViewResources.Resource.Previous</span>
+        </button>
+        <div class="splitToolbarButtonSeparator"></div>
+        <button class="toolbarButton findNext" title="@ViewResources.Resource.Next" id="findNext" tabindex="93" data-l10n-id="find_next" data-toggle="tooltip" data-placement="bottom">
+          <i class="far fa-chevron-down"></i>
+          <span data-l10n-id="find_next_label">@ViewResources.Resource.Next</span>
+        </button>
+      </div>
+      <div>
+        <input type="checkbox" id="findHighlightAll" class="toolbarField" tabindex="94">
+        <label for="findHighlightAll" class="toolbarLabel" data-l10n-id="find_highlight">@ViewResources.Resource.HighlightAll</label>
+        <input type="checkbox" id="findMatchCase" class="toolbarField" tabindex="95">
+        <label for="findMatchCase" class="toolbarLabel" data-l10n-id="find_match_case_label">@ViewResources.Resource.Matchcase</label>
+      </div>
+      <span id="findResultsCount" class="toolbarLabel hidden"></span>
+      <span id="findMsg" class="toolbarLabel"></span>
+    </div>
+    <!-- findbar -->
+    <div id="secondaryToolbar" class="secondaryToolbar hidden doorHangerRight">
+      <div id="secondaryToolbarButtonContainer">
+
+        @*COMMENT THIS CODE IN*@
+        @if (ViewBag.MODULE == "EMS")
+        {
+        <button id="QRButton-secondary" tabindex="52" class="secondaryToolbarButton hidden" data-l10n-id="qr_label">
+          <i class="far fa-qrcode" aria-hidden="true"></i>
+          <span data-l10n-id="qr_label">@ViewResources.Resource.QRCodes</span>
+        </button>
+
+
+        <button id="emsImportAnnotations-secondary" tabindex="53" data-l10n-id="annotation_clear" onclick="ScrlTabs.onImportAnnotations()" class="secondaryToolbarButton hidden">
+          <span data-l10n-id="annotation_clear">@ViewResources.Resource.Import</span>
+        </button>
+
+        <button id="downloadWithAnnotations-secondary" tabindex="54" data-l10n-id="annotation_dl" class="secondaryToolbarButton hidden">
+          <span data-l10n-id="annotation_dl">@ViewResources.Resource.DownloadAnnotations</span>
+        </button>
+        <div class="horizontalToolbarSeparator visibleLargeView"></div>
+        }
+        <a href="#" id="secondaryViewBookmark" class="secondaryToolbarButton bookmark visibleSmallView" title="@ViewResources.Resource.CurrentView2" data-toggle="tooltip" data-placement="bottom" tabindex="55" data-l10n-id="bookmark" style="display:none">
+          <i class="far fa-bookmark"></i>
+          <span data-l10n-id="bookmark_label">@ViewResources.Resource.CurrentView</span>
+        </a>
+
+        @*COMMENT THIS CODE IN*@
+        <button class="secondaryToolbarButton pageUp hidden" id="previous-secondary" tabindex="13" data-l10n-id="previous">
+          <i class="far fa-caret-left"></i>
+          <span data-l10n-id="previous_label">@ViewResources.Resource.PreviousPage</span>
+        </button>
+        <button class="secondaryToolbarButton pageDown hidden" id="next-secondary" tabindex="14" data-l10n-id="next">
+          <i class="far fa-caret-right"></i>
+          <span data-l10n-id="next_label">@ViewResources.Resource.NextPage</span>
+        </button>
+        <button id="firstPage" class="secondaryToolbarButton firstPage" tabindex="56" data-l10n-id="first_page">
+          <i class="far fa-step-backward"></i>
+          <span data-l10n-id="first_page_label">@ViewResources.Resource.GoTheFirstPage</span>
+        </button>
+        <button id="lastPage" class="secondaryToolbarButton lastPage" tabindex="57" data-l10n-id="last_page">
+          <i class="far fa-step-forward"></i>
+          <span data-l10n-id="last_page_label">@ViewResources.Resource.GoTheLastPage</span>
+        </button>
+        <div class="horizontalToolbarSeparator"></div>
+        <button id="documentProperties" class="secondaryToolbarButton documentProperties" tabindex="61" data-l10n-id="document_properties">
+          <i class="far fa-info-circle"></i>
+          <span data-l10n-id="document_properties_label">@ViewResources.Resource.DocumentProperties</span>
+        </button>
+      </div>
+    </div>
+    <!-- secondaryToolbar -->
+    <div id="Toolbar2D" class="documentviewertoolbar" align="center"></div>
+    <div id="LineSettingsDialog"></div>
+    <div id="Toolbar2DSearchMenu" class="documentviewertoolbarhanger">
+      @*<label for="findInput" class="toolbarLabel" data-l10n-id="find_label">@ViewResources.Resource.Find:</label>
+      <input id="findInput" class="toolbarField" tabindex="91">
+      <div class="splitToolbarButton">
+        <button class="toolbarButton findPrevious" title="@ViewResources.Resource.Previous" id="findPrevious" tabindex="92" data-l10n-id="find_previous" data-toggle="tooltip" data-placement="bottom">
+          <i class="far fa-chevron-up"></i>
+          <span data-l10n-id="find_previous_label">@ViewResources.Resource.Previous</span>
+        </button>
+        <div class="splitToolbarButtonSeparator"></div>
+        <button class="toolbarButton findNext" title="@ViewResources.Resource.Next" id="findNext" tabindex="93" data-l10n-id="find_next" data-toggle="tooltip" data-placement="bottom">
+          <i class="far fa-chevron-down"></i>
+          <span data-l10n-id="find_next_label">@ViewResources.Resource.Next</span>
+        </button>
+      </div>
+      <div>
+        <input type="checkbox" id="findHighlightAll" class="toolbarField" tabindex="94">
+        <label for="findHighlightAll" class="toolbarLabel" data-l10n-id="find_highlight">@ViewResources.Resource.HighlightAll</label>
+        <input type="checkbox" id="findMatchCase" class="toolbarField" tabindex="95">
+        <label for="findMatchCase" class="toolbarLabel" data-l10n-id="find_match_case_label">@ViewResources.Resource.Matchcase</label>
+      </div>
+      <span id="findResultsCount" class="toolbarLabel hidden"></span>
+      <span id="findMsg" class="toolbarLabel"></span>*@
+    </div>
+
+    @*
+  </div>
+
+  <div id="mainContainer" style="display:none;"></div>
+  <menu type="context" id="viewerContextMenu" style="display:none;">
+    <menuitem id="contextFirstPage" label="@ViewResources.Resource.GoTheFirstPage" data-l10n-id="first_page">
+    </menuitem>
+    <menuitem id="contextLastPage" label="@ViewResources.Resource.GoTheLastPage" data-l10n-id="last_page">
+    </menuitem>
+    <menuitem id="contextPageRotateCw" label="@ViewResources.Resource.RotateClockwise" data-l10n-id="page_rotate_cw">
+    </menuitem>
+    <menuitem id="contextPageRotateCcw" label="@ViewResources.Resource.RotateCounterclockwise"
+      data-l10n-id="page_rotate_ccw">
+    </menuitem>
+  </menu>
+  <div id="viewerContainer" style="height:100%">
+    <!--tabindex="0"-->
+    <div id="annotationCanvasContainer" class=""></div>
+    <!--hidden-->
+    <div id="viewer" class="pdfViewer">
+      <div id="raphael"></div>
+    </div>
+    <div id="freedrawtool" class="freedrawtool"></div>
+  </div>
+  <div id="errorWrapper" hidden=''>
+    <!-- random warning: hidden='true' -->
+    <div id="errorMessageLeft">
+      <span id="errorMessage"></span>
+      <button id="errorShowMore" data-l10n-id="error_more_info">
+        More Information
+      </button>
+      <button id="errorShowLess" data-l10n-id="error_less_info" hidden=''>
+        <!-- random warning: hidden='true' -->
+        Less Information
+      </button>
+    </div>
+    <div id="errorMessageRight">
+      <button id="errorClose" data-l10n-id="error_close">
+        Close
+      </button>
+    </div>
+    <div class="clearBoth"></div>
+    <textarea id="errorMoreInfo" hidden='' readonly="readonly"></textarea><!-- random warning: hidden='true' -->
+  </div>
+  </div>
+  <div id="overlayContainer" class="hidden">
+    <div id="passwordOverlay" class="container hidden" style="display:none;">
+      <div class="dialog">
+        <div class="row">
+          <p id="passwordText" data-l10n-id="password_label">Enter Password</p>
+        </div>
+        <div class="row">
+          <!-- The type="password" attribute is set via script, to prevent warnings in Firefox for all http:// documents. -->
+          <input id="password" class="toolbarField" style="height: 3em;" />
+        </div>
+        <div class="buttonRow">
+          <button id="passwordCancel" class="overlayButton"><span data-l10n-id="password_cancel">Cancel</span></button>
+          <button id="passwordSubmit" class="overlayButton"><span data-l10n-id="password_ok">OK</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <!-- outerContainer -->
+  <div id="loadingOverlay" class="loadingOverlay hidden"></div>
+  <input id="hiddenImageUploadDOM" type="file" accept="image/jpg, image/jpeg, image/png" style="display:none;" />
+
+  <!-- <div id="qrcode">
+    <script type="text/javascript">
+        new QRCode(document.getElementById('qrcode'), 'http://jindo.dev.naver.com/collie');
+    </script>
+</div> -->
+
+
+
+
+  <!-- <script src="/ClientApp/src/assets/scripts/2DGraphics/ContextMenu.js"></script> -->
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/AnnotationApplication.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/CRUDController.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/AnnotationAjaxService.js"></script>
+  <!-- <script src="/ClientApp/src/assets/scripts/2DGraphics/AnnotationList.js"></script> -->
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/CanvasController.js"></script>
+  <!-- <script src="/ClientApp/src/assets/scripts/2DGraphics/CommentController.js"></script> -->
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/CRUDController.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/DownloadableAnnotationCanvas.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/DownloadAnnotationController.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/DrawStateService.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/ImageUploadController.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/PropertyTool.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/RightSidebarController.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/RightSidebarTemplate.js"></script>
+  <!-- <script src="/ClientApp/src/assets/scripts/2DGraphics/TaskController.js"></script> -->
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/TwoDToolbar.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/TwoDUtils.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/TwoDInitialize.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/hammer.min.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/raphael.min.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/pdf.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/debugger.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/l10n.js"></script>
+
+  <!-- <script src="/ClientApp/src/assets/scripts/2DGraphics/CreateToDo.js"></script> -->
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/LocalAnnotationsController.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/SvgGlobalController.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/SvgController.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/SvgRect.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/SvgCircle.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/SvgLine.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/SvgCallout.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/SvgTextbox.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/SvgMeasurementToolBasic.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/SvgTextTag.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/SvgImage.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/SvgStamp.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/SvgCloud.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/SvgPolyline.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/SvgHighlight.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/SvgEmsGroup.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/SvgDefect.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/SvgTextTag.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/SvgFreeDraw.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/pdf.worker.js"></script>
+  <script src="/ClientApp/src/assets/scripts/2DGraphics/viewer.js"></script>
+
+
+  <script>
+
+    emsData = {};
+    dataExchange.handlers.loadPDF = PDFJS.webViewerLoadPresignedURL;
+    dataExchange.handlers.documentMetaData = function(document){
+      debugger;
+      documentMetaData = document;
+      documentExternalId = document.DocumentId
+      documentVersionExternalId = document.DocumentVersionId;
+      ProjectId = document.ProjectId;
+      AnnotationApplication.documentId= documentExternalId;
+      AnnotationApplication.documentVersionId= documentVersionExternalId;
+      AnnotationApplication.projectId= ProjectId;
+      AnnotationApplication.CRUDController.GetDocumentPagesRotation(AnnotationApplication.documentVersionId,
+            null,
+            true).then(
+              data =>{
+                documentPagesRotation = data;
+              }
+            );
+      //documentPagesRotation = 
+    }
+    dataExchange.handlers.setStatus = function(node){ 
+      emsData[node.Id] = node; 
+      if (SvgGlobalControllerLogic){
+        SvgGlobalControllerLogic.updateEmsNodeText(node.Id, node.Name);
+      }
+      if (AnnotationApplication){
+        AnnotationApplication.DrawStateService.updateEmsNode(node.Id, node.Name, node.Type);
+      }
+    };
+    dataExchange.handlers.uploadClick = function(){ 
+      TwoDToolbar.prototype.onDrawAnnotationClick('IMAGEUPLOAD');
+    };
+    dataExchange.handlers.deleteStatus = function(node){ delete emsData[node.Id]; };
+    dataExchange.handlers.sharedId = function(id){ sharedId = id; };
+    dataExchange.handlers.scrollToPosition = function(annotation){
+      pageNo = annotation['PageNumber'];
+
+      // getting bearings
+      viewport = PDFViewerApplication.pdfViewer._pages[pageNo-1].viewport;
+      viewportWidth = viewport.width;
+      viewPortHeight = viewport.height;
+      container = document.getElementById('viewerContainer');
+      containerWidth = container.clientWidth;
+      containerHeight = container.clientHeight;
+
+      // finding annotation center
+      xRel = annotation['Left'] ;
+      yRel = annotation['Top'] ;
+      if (annotation['Width']){
+        xRel += annotation['Width']
+      }
+      if (annotation['Height']){
+        yRel += annotation['Height']
+      }
+
+      // centering annotation in view
+      if (containerWidth > viewportWidth){
+          left = (viewportWidth - containerWidth) / 2;
+      } else {
+          left = viewportWidth*xRel - containerWidth/2;
+          right = viewportWidth*xRel + containerWidth/2;
+          if (left < 0){
+              left = 0;
+          }
+          if (right > viewportWidth){
+              left = left + viewportWidth - right;
+          }
+      }
+
+      // navigtae
+      PDFJS.scrollIntoView(PDFViewerApplication.pdfViewer._pages[pageNo-1].div,{left:left, top: viewPortHeight*yRel - containerHeight/2})
+    }
+
+    $(document).ready(function (e) {
+      //Loading_OL = new LoadingOverlayLogic();
+      scrollPdfToPageNumber = 0;
+      documentPagesRotation = [];
+
+      initializeAnnotations();
+      var ALLOW_ZOOM = true;
+      var GENERATE_CANVAS = true;
+
+    });
+  </script>
+
+</body>
+
+</html>

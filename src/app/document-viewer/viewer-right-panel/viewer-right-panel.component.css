@@ -1,0 +1,275 @@
+/* Side panels */
+.iconspan i {
+    font-size: 16px;
+    position: relative;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    vertical-align: sub;
+}
+
+.vertical {
+    width: 40px;
+    background-color: #f6f7fb;
+    padding: 15px 10px;
+    height: calc(100vh - 60px);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.verticalems{
+    width: 40px;
+    background-color: #f6f7fb;
+    padding: 15px 10px;
+    /* height: inherit; */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ems3DResolution {
+    width: 40px;
+    background-color: #f6f7fb;
+    padding: 14px 0px;
+    /* height: calc(100vh - 60px); */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.doc3DResolution {
+    width: 40px;
+    background-color: #f6f7fb;
+    padding: 14px 0px;
+    height: calc(100vh - 60px);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.rightexpandableems{
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    background-color: #f6f7fb;
+    font-size: 12px;
+    height: calc(100vh - 60px);
+    padding: 16px 10px 20px 10px;
+}
+
+.bar-button {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.bar-button a,
+.downloaddiv a {
+    color: #3b3f46;
+}
+
+.bar-button a:hover, .bar-button a:focus, .bar-button a:active,
+.downloaddiv a:hover, .downloaddiv a:focus, .downloaddiv a:active {
+    color: #2A7CFF;
+}
+
+.subtypeThumbnail{
+    max-height:500px; 
+    max-width: 280px
+}
+
+
+
+.cmacs-collapsable-li span {
+    position: relative;
+    left: 83%;
+}
+
+.cmacs-collapsable-li:hover {
+    cursor: pointer;
+}
+
+.cmacs-menu-side-bar.ant-menu-inline-collapsed li.cmacs-collapsable-li span {
+    left: unset;
+}
+
+
+
+
+.vertical-divider {
+    width: 20px;
+    background-color: #DEE0E5;
+    margin-top: 0px;
+    margin-bottom: 15px;
+}
+
+.color-picker{
+    width: 140px; display: inline-flex
+}
+
+.viewerside-panel-arrow {
+    display: none;
+}
+
+.viewerside-middle>li:first-child {
+    padding-top: 0px !important;
+    margin-bottom: 10px !important;
+}
+
+.viewerside-middle>li+.vertical-divider {
+    margin-top: 10px !important;
+}
+
+.viewerside-middle>.vertical-divider+li {
+    padding-top: 0px !important;
+}
+
+.viewerside-middle.emsarrows {
+    overflow: hidden;
+    white-space: nowrap;
+    height:calc(100% - 188px);
+}
+
+.viewerside-panel-arrow.emsarrows {
+    text-align: center;
+    display: block;
+    cursor: pointer;
+}
+
+.viewerside-panel-arrow.emsarrows:first-child {
+    margin-bottom: 15px !important;
+    padding: 0px !important;
+}
+
+.viewerside-panel-arrow.emsarrows:last-child {
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+}
+
+/* expanded panels */
+
+.left-expandable, .right-expandable {
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    background-color: #f6f7fb;
+    font-size: 12px;
+    height: calc(100vh - 60px);
+    padding: 16px 10px 20px 10px;
+    z-index: 1;
+}
+
+.ems-left-expandable, .ems-right-expandable {
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    background-color: #f6f7fb;
+    font-size: 12px;
+    height: inherit;
+    padding: 16px 10px 20px 10px;
+    z-index: 1;
+}
+
+.expanded-container {
+    height: calc(100% - 45px);
+    margin-right: -10px;
+    padding-right: 10px;
+    overflow-x: auto;
+    width: 290px;
+    scrollbar-color: #cfd3d9 #ffffff;
+scrollbar-width: thin;
+}
+
+.expandarrow>* {
+    display: inline-block;
+}
+
+.version-day {
+    line-height: 1.33;
+    color: #ACB3BF;
+    margin-bottom: 8px;
+    margin-top: 13px;
+}
+
+.sectiontitle {
+    margin-bottom: 15px;
+    width: calc(100% - 30px);
+}
+
+
+/* side content */
+.itemwidth{
+    width:100%;
+}
+
+.translationwidth{
+    width:calc(100% - 20px);
+    display:inline-block;
+}
+
+.slider-input{
+    display: inline-block;
+    text-align: center;
+    width:40px;
+    margin-left: 215px;
+}
+
+/* view */
+.viewer-container {
+    height: 100%;
+}
+
+.flexdisplay {
+    height: 100%;
+    display: flex;
+}
+
+  /*custom scrollbar for Chrome and Opera - idk if this is working*/
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height:6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #CFD3D9;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #BEC4CD;
+    border-radius: 10px;
+}
+
+/* responsive items */
+
+@media screen and (max-height:300px) {
+    .doc3DResolution .viewerside-middle {
+        overflow: hidden;
+        white-space: nowrap;
+        height: calc(100% - 70px);
+    }
+    .doc3DResolution .viewerside-panel-arrow {
+        text-align: center;
+        display: block;
+        cursor: pointer;
+    }
+    .doc3DResolution .viewerside-panel-arrow:first-child {
+        margin-bottom: 15px !important;
+        padding: 0px !important;
+    }
+    .doc3DResolution .viewerside-panel-arrow:last-child {
+        padding-top: 15px !important;
+        padding-bottom: 15px !important;
+    }
+}
+
+@media screen and (max-height:350px) {
+    .ems3DResolution .viewerside-middle {
+        overflow: hidden;
+        white-space: nowrap;
+        height: calc(100% - 70px);
+    }
+    .ems3DResolution .viewerside-panel-arrow {
+        text-align: center;
+        display: block;
+        cursor: pointer;
+    }
+    .ems3DResolution .viewerside-panel-arrow:first-child {
+        margin-bottom: 15px !important;
+        padding: 0px !important;
+    }
+    .ems3DResolution .viewerside-panel-arrow:last-child {
+        padding-top: 15px !important;
+        padding-bottom: 15px !important;
+    }
+}
